@@ -1,0 +1,31 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi cartera - Todos</title>
+</head>
+<body>
+    <section>
+        <h1>Mis movimientos</h1>
+        <table>
+            <tr>
+                <th>Fecha</th>  <!--lo hemos hecho con th*3-->
+                <th>Concepto</th>
+                <th>Importe</th>
+            </tr> <!--creamos un bucle para no tener que ponerlo manualmente indentado-->
+            {% for movement in the_movements%}
+            <tr>       <!--lo hemos hecho con th*2>td*3  th celda en negrita y td las normales-->
+                <td>{{ movement[0]}}</td>
+                <td>{{ movement [1]}}</td>
+                <td>{{ movement[2]}}{{ movement[3]}}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                
+            </tr>
+
+        </table>
+    </section>
+
+</body>
+</html>
