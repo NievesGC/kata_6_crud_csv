@@ -1,3 +1,7 @@
-01/01/2023,"Sueldo",1000,EUR
-05/01/2023,"Mi pandereta, que bonita",-20,EUR
-06/01/2023,"Loteria del niño",250,EUR
+date,abstract,amount,currency
+2023-01-01,"Sueldo",1000,EUR
+2023-05-01,"Mi pandereta , que bonita",-20 ,EUR
+2023-06-01,"Loteria del niño",250,EUR2023-06-12,un co ncepto,50,EUR,Enviar
+
+2023-06-29,agua,30,EUR,Enviar
+

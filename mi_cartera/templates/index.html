@@ -5,7 +5,10 @@
     <title>Mi cartera - Todos</title>
 </head>
 <body>
-    <section>
+    <nav>
+        <a href="/new_movement">Nuevo</a>      <!--crea un enlace - hace una allamada al servidor-->
+    </nav>
+    <main>
         <h1>Mis movimientos</h1>
         <table>
             <tr>
@@ -15,9 +18,9 @@
             </tr> <!--creamos un bucle para no tener que ponerlo manualmente indentado-->
             {% for movement in the_movements%}
             <tr>       <!--lo hemos hecho con th*2>td*3  th celda en negrita y td las normales-->
-                <td>{{ movement[0]}}</td>
-                <td>{{ movement [1]}}</td>
-                <td>{{ movement[2]}}{{ movement[3]}}</td>
+                <td>{{ movement.date}}</td>
+                <td>{{ movement.abstract}}</td>
+                <td>{{ movement.amount}}{{movement.currency}}</td>
             </tr>
             {% endfor %}
             <tr>
@@ -25,7 +28,7 @@
             </tr>
 
         </table>
-    </section>
+    </main>
 
 </body>
 </html>
