@@ -1,6 +1,9 @@
 from mi_cartera import app
+from mi_cartera.models import Movement, MovementDAO
 from flask import render_template, request, redirect
 import csv
+
+dao = MovementDAO("movements.dat")
 
 @app.route("/")  #crear la ruta
 def index():
@@ -15,10 +18,16 @@ def new_mov():
     if request.method == "GET":
         return render_template("new.html")
     else:
+        """
+        nuevo_mov = MovementDAO("movements.dat")
+        """
         data = request.form
-        f = open("movements.dat","a")
+        dao.insert(Movement(data["date"],data["abstract"],
+                                  data["amount"], data["currency"]))
+        """
+        f = open("movements.dat","a", newline="")               #NEWLINE SIRVE PARA CUANDO SE AÑADEN LAS LINEAS EN MOVEMENTS QUE NO SE QUEDE UNE SPACIO ENTRE ELLAS
         writer = csv.DictWriter(f,fieldnames=data.keys())
         writer.writerow(data)
         f.close()
-
+        """
         return redirect("/")
