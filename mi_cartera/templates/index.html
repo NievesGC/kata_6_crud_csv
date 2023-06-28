@@ -1,13 +1,5 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi cartera - Todos</title>
-</head>
-<body>
-    <nav>
-        <a href="/new_movement">Nuevo</a>      <!--crea un enlace - hace una allamada al servidor-->
-    </nav>
+{% extends "base.html" %}
+{% block content %}
     <main>
         <h1>Mis movimientos</h1>
         <table>
@@ -28,7 +20,4 @@
             </tr>
 
         </table>
-    </main>
-
-</body>
-</html>
+{% endblock %}
