@@ -12,6 +12,7 @@ def index():
     except ValueError as e:
         flash(str(e))
         return render_template("index.htm",the_movementes=[],title = "Todos")
+
 @app.route("/new_movement", methods=["GET","POST"])
 def new_mov():
     if request.method == "GET":
@@ -25,5 +26,17 @@ def new_mov():
         except ValueError as e: #lo hacemos con un mensaje flask -- as e es para llamar a ValueError e
             flash(str(e))  #utilizamos el o bjeto flash de flask para convertir en el error en str 
             return render_template("new.html", the_form=data, title = "Alta de moviento")
-     
-        
+
+@app.route("/update_movement/<int:pos>", methods=["GET","POST"])   #int(porque es un numero) id le metes el tipo de variable que quieres meter - le indicas el id
+def upd_mov(pos):
+    if request.method == "GET":
+        mov = dao.get(pos)
+        return render_template("update.html", title="Modificacion de movimiento", the_form=mov )  
+    else:
+        data= request.form
+        try:
+            mv = Movement(data["date"],data["abstract"],data["amount"],data["currency"])
+            dao.update(pos,mv)
+        except ValueError as e:
+            flash(str(e))
+            return render_template("update.html", title="Modificacion de movimiento", the_form=mov )

@@ -13,6 +13,7 @@
                 <td>{{ movement.date}}</td>
                 <td>{{ movement.abstract}}</td>
                 <td>{{ movement.amount}}{{movement.currency}}</td>
+                <td><a href="/update_movement/{{loop.index0}}">Editar</a></td> <!--#¿loop.index es lo que saca el numerode posicion?-->
             </tr>
             {% endfor %}
             <tr>

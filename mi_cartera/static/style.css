@@ -1,0 +1,21 @@
+#msg-error p {
+    color:rgb(252, 252, 252);
+    padding: 10px;
+    text-align: center;
+}
+#msg-error  {
+    border: 3px solid rgb(18, 19, 109);
+    background-color: rgb(227, 92, 92);
+    border-radius:10px ;
+}
+
+header , footer {  
+    background-color: var(--primary);
+}
+
+header p , footer p {  
+    color: aliceblue;
+    font-weight: bold;
+    font-size: 1.2em;
+
+}

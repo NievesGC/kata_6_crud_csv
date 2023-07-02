@@ -106,3 +106,46 @@ def test_all_movements():
     assert registers[0] == mvm1
     assert registers[1] == mvm2
     assert registers[2] == mvm3
+
+def test_get_movements_by_pos():
+    path = "cuadreno_de_mentira.dat"
+    if os.path.exists(path):
+        os.remove(path)
+
+    dao = MovementDAO(path)
+    mvm1 = Movement("2023-01-01","Un concepto",1,"EUR")
+    dao.insert(mvm1)
+    mvm2 = Movement("2023-01-02","Un concepto2",2,"EUR")
+    dao.insert(mvm2)
+    mvm3 = Movement("2023-01-03","Un concepto3",3,"EUR")
+    dao.insert(mvm3)
+
+    register = dao.get(1)
+
+    assert register == mvm2
+
+def test_get_movement_beyond_the_end():
+    path = "cuadreno_de_mentira.dat"
+    if os.path.exists(path):
+        os.remove(path)
+
+    dao = MovementDAO(path)
+    mvm1 = Movement("2023-01-01","Un concepto",1,"EUR")
+    dao.insert(mvm1)
+    mvm2 = Movement("2023-01-02","Un concepto2",2,"EUR")
+    dao.insert(mvm2)
+    mvm3 = Movement("2023-01-03","Un concepto3",3,"EUR")
+    dao.insert(mvm3)
+    with pytest.raises(IndexError):
+        register = dao.get(5)
+
+def test_get_movement_zero_in_a_empty_file():
+    path = "cuadreno_de_mentira.dat"
+    if os.path.exists(path):
+        os.remove(path)
+
+    dao = MovementDAO(path)
+
+
+    with pytest.raises(IndexError):
+        register = dao.get(0)

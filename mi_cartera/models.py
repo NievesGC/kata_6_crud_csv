@@ -71,3 +71,21 @@ class MovementDAO:
             m = Movement(register["date"],register["abstract"],register["amount"],register["currency"])
             movements.append(m)
         return movements
+    
+    def get(self,pos):
+
+        f = open(self.path,"r")
+        reader = csv.DictReader(f, delimiter= ",", quotechar='"')
+        ix = float("-inf")
+        for ix, register in enumerate(reader): #enumerate sirve para... me devuelve una tupla con posicion valor 
+            if ix == pos:
+                break
+        if pos > ix:
+            raise IndexError("El movimiento no existe")                
+        
+        m = Movement(register["date"],register["abstract"],register["amount"],register["currency"])
+        return m
+    
+    def update(self,pos,movement):
+        f = open(self.path, "")
+        reader = csv.DictReader(f, delimiter = ",", quotechar="'")
