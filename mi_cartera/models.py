@@ -87,5 +87,19 @@ class MovementDAO:
         return m
     
     def update(self,pos,movement):
-        f = open(self.path, "")
+        f = open(self.path, "r")
         reader = csv.DictReader(f, delimiter = ",", quotechar="'")
+        regs = list(reader) #creamos una lista con todas las lineas del documento
+        fieldnames = reader.fieldnames #añadismos las cabeceras
+        f.close()
+        new_name = "__movements__new.csv" #creamos un nuevo archivo oen el que escribiremos lso datos
+        f = open(new_name,"w", newline="")
+        writer = csv.DictWriter(f,fieldnames=fieldnames,delimiter = ",", quotechar="'") #esto ya escribe directamente las cabeceras de los datos que he,os creado
+        writer.writeheader() #escribe las cabeceras
+        writer.writerows(regs[:pos]) 
+        writer.writerow({"date":movement.date,"abstract":movement.abstract, #introducimos los datos a capon
+                        "amount":movement.amount, "currency":movement.currency})
+        writer.writerows(regs[pos+1:])#introducimos los datos desde el principio al anterir 
+        f.close()
+        os.remove(self.path)
+        os.rename(new_name,self.path)#con os borramos el archivo y lo renombramos

@@ -12,16 +12,13 @@
        <p class="container"> Mi cartera</p>
     </header>
     
-    <nav>
+    <nav class = "container">
         <ul>
             <li><a href="/">Inicio</a> <!--para volver al inicio --></li>
             <li><a href="/new_movement">Nuevo</a></li>
         </ul>
-        <ul>
-            <li>Exit</li>
-        </ul>
         
-    </nav class= "container">
+    </nav>
     {%with msgs = get_flashed_messages()%} <!--para consegir los mensage sy el if de debajopara ocultarlo , solo funconara si es false  y abajo se cierran-->
         {% if msgs%}
         <div class="container" id="msg-error">

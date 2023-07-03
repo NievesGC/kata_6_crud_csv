@@ -1,6 +1,9 @@
 date,abstract,amount,currency
-2023-01-01,"Sueldo",1000,EUR
-2023-05-01,"Mi pandereta , que bonita",-20 ,EUR
-2023-06-01,"Loteria del niño",250,EUR
-
-2023-06-27,ss,2.0,EUR
+2023-01-01,Sueldo,1000,EUR
+2023-05-01,'Mi pandereta',-20.0,EUR
+2023-06-01,Loteria del niño,250,EUR
+2023-06-27,sskkkkkii,2.0,EUR
+2023-06-28,kkkkkkkkkcsc,5.0,EUR
+2023-06-28,"hola, prueba con coma",-10.0,EUR
+2023-06-29,otra prueba,-20.0,EUR
+2023-06-30,"coma de primeras, hola coma",44.0,EUR

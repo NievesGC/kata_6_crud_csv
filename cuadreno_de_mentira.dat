@@ -1,1 +1,4 @@
 date,abstract,amount,currency
+2023-01-01,Un concepto,1.0,EUR
+2023-01-31,Modificado,22.0,USD
+2023-01-03,Un concepto3,3.0,EUR

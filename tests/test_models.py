@@ -149,3 +149,21 @@ def test_get_movement_zero_in_a_empty_file():
 
     with pytest.raises(IndexError):
         register = dao.get(0)
+
+def test_update_movements():
+    path = "cuadreno_de_mentira.dat"
+    if os.path.exists(path):
+        os.remove(path)
+
+    dao = MovementDAO(path)
+    mvm1 = Movement("2023-01-01","Un concepto",1,"EUR")
+    dao.insert(mvm1)
+    mvm2 = Movement("2023-01-02","Un concepto2",2,"EUR")
+    dao.insert(mvm2)
+    mvm3 = Movement("2023-01-03","Un concepto3",3,"EUR")
+    dao.insert(mvm3)
+
+    mvm_mod= Movement("2023-01-31","Modificado",22,"USD")
+
+    dao.update(1,mvm_mod)
+    assert dao.get(1) == mvm_mod
