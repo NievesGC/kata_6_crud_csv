@@ -1,13 +1,14 @@
 from datetime import date
 import csv
 import os
+import sqlite3
 
 CURRENCIES = ("EUR","USD")
 
 class Movement:
-    def __init__(self,input_date,abstract,amount,currency):
+    def __init__(self,input_date,abstract,amount,currency, id = None):
         self.date = input_date
-       
+        self.id= id
 
         self.abstract = abstract
 
@@ -49,6 +50,87 @@ class Movement:
     def __eq__(self,other):
         return self.date == other.date and self.abstract == other.abstract and self.amount == other.amount and self.currency == other.currency
 
+class MovementDAOsqlite:
+    def __init__(self,db_path):
+        self.path = db_path
+
+        query = """
+        CREATE TABLE IF NOT EXISTS "movements" (
+            "id"	INTEGER UNIQUE,
+            "date"	TEXT NOT NULL,
+            "abstract"	TEXT NOT NULL,
+            "amount"	REAL NOT NULL,
+            "currency"	TEXT NOT NULL,
+            PRIMARY KEY("id" AUTOINCREMENT)
+        );
+        """
+    
+        conn = sqlite3.connect(self.path)
+        cur = conn.cursor()
+        cur.execute(query)
+        conn.close()
+
+    def insert(self, movement):
+        
+        query = """
+        INSERT INTO movements
+            (date,abstract,amount,currency)
+        VALUES(?,?,?,?) 
+        """
+        #CON DATOS DINAMISCOS LAS ?? LSO DATOS VAN A VENIR DADOS POR MOVEMENTS
+
+        conn = sqlite3.connect(self.path)
+        cur = conn.cursor()
+        cur.execute(query,(movement.date,movement.abstract,movement.amount,movement.currency))
+        conn.commit()
+        conn.close()
+    
+    def get(self,id):
+        query = """
+        SELECT  date,abstract,amount,currency,id
+         FROM movements
+        WHERE id = ?;
+        """
+        conn = sqlite3.connect(self.path)
+        cur = conn.cursor()
+        cur.execute(query,(id,))
+        res = cur.fetchone()
+        conn.close()
+        if res:
+            return Movement(*res) # el asterisco delante va descomponer en iitems
+        
+    def get_all(self):
+        query = """
+        SELECT date,abstract,amount,currency,id
+         FROM movements
+         ORDER by date;
+        """
+        conn = sqlite3.connect(self.path)
+        cur = conn.cursor()
+        cur.execute(query)
+        res = cur.fetchall()
+        """
+        lista=[]
+        for reg in res:
+            lista.append(Movement(*reg))
+        """
+        lista = [Movement(*reg) for reg in res]  #list comprehension
+
+        conn.close()
+        return lista
+    
+    def update(self,id, movement):
+        query = """
+        UPDATE movements
+            SET date = ?, abstract = ?, amount = ?, currency = ?
+        WHERE id = ?
+        """
+
+        conn = sqlite3.connect(self.path)
+        cur = conn.cursor
+        cur.execute(query,(movement.date,movement.abstract,movement.amount,movement.currency, id))
+        conn.commit()
+        conn.close()
 class MovementDAO:
     def __init__(self,file_path):
         self.path = file_path

@@ -1,8 +1,10 @@
 from datetime import date
-from mi_cartera.models import Movement, MovementDAO
+from mi_cartera.models import Movement, MovementDAO, MovementDAOsqlite
 import pytest
 import os
 import csv
+import sqlite3
+
 def test_create_movements():
     m = Movement("0002-01-31","Sueldo", 1000, "EUR")
     assert m.date == date(2,1,31)
@@ -19,7 +21,6 @@ def test_change_date():
     m.date = "1970-04-08"
     assert m.date == date(1970,4,8)
     
-
 def test_fails_if_amount_eq__zero():
    with pytest.raises(ValueError):
         m = Movement("0003-01-01","Concepto valido",0,"EUR")
@@ -39,6 +40,7 @@ def test_fails_if_amount_not_is_float():
 def test_fails_if_currency_not_in_currency():
     with pytest.raises(ValueError):
         m= Movement("0001-01-01","sueldo", 1000, "GBP")
+
 def test_fails_if_change_currencyy_not_in_currencies():
     m = Movement("0001-01-01","Correcto",1000,"EUR")
     with pytest.raises(ValueError):
@@ -55,6 +57,67 @@ def test_create_dao():
     cabecera = f.readline()
 
     assert cabecera == "date,abstract,amount,currency\n"
+
+def test_create_dao_sqlite():
+    path = "base_cualquiera.db"
+    if os.path.exists(path):
+        os.remove(path)
+
+    dao = MovementDAOsqlite(path)
+
+    conn = sqlite3.connect(path)
+    cursor = conn.cursor()
+    cursor.execute("SELECT*from movements")
+    
+    assert cursor.fetchall() == []
+    
+
+    
+
+def test_instert_movement_sqlite():
+    path = "base_cualquiera1.db"
+    if os.path.exists(path):
+        os.remove(path)
+
+    dao = MovementDAOsqlite(path)
+    dao.insert(Movement("0001-01-01","Concept",12,"EUR"))
+    dao.insert(Movement("0001-01-02","algo",-12,"EUR"))
+
+    conn = sqlite3.connect(path)
+    cursor = conn.cursor()
+    cursor.execute("SELECT * from movements")
+    
+    assert cursor.fetchall() == [(1,"0001-01-01","Concept",12.0,"EUR"),
+                                 (2,"0001-01-02","algo",-12,"EUR")]
+    conn.close()
+    
+def test_read_one_movemnt_sqlite():
+    path = "base_cualquiera2.db"
+    if os.path.exists(path):
+        os.remove(path)
+
+    dao = MovementDAOsqlite(path)
+    dao.insert(Movement("0001-01-01","Concept",12,"EUR"))
+    dao.insert(Movement("0001-01-02","algo",-12,"EUR"))
+    
+
+    assert dao.get(2) == Movement("0001-01-02","algo",-12,"EUR", id=2)
+
+def test_read_all_movements_sqlite():
+    path = "base_cualquiera3.db"
+    if os.path.exists(path):
+        os.remove(path)
+
+    dao = MovementDAOsqlite(path)
+    dao.insert(Movement("0001-01-02","algo",12,"EUR"))
+    dao.insert(Movement("0001-01-01","Concept",-12,"EUR"))
+
+    movements = dao.get_all()
+    assert movements[0] == Movement("0001-01-01","Concept",-12,"EUR",id = 2)
+    assert movements[1] == Movement("0001-01-02","algo",12,"EUR",id = 1)
+
+
+    
 
 def test_insrance_dao_path_exists():
     path = "cuadreno_de_mentira.dat"
