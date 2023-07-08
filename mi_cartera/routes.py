@@ -1,7 +1,9 @@
 from mi_cartera import app
 from mi_cartera.models import Movement, MovementDAOsqlite
 from flask import render_template, request, redirect, flash,url_for
+from mi_cartera.forms import MovementsForm
 import csv
+
 
 dao = MovementDAOsqlite("data/movements.db")
 
@@ -17,17 +19,19 @@ def index():
 
 @app.route("/new_movement", methods=["GET","POST"])
 def new_mov():
+    form = MovementsForm()
     if request.method == "GET":
-        return render_template("new.html",the_form={}, title = "Alta de movimiento")
+        return render_template("new.html",the_form=form, title = "Alta de movimiento")
     else:
-        data = request.form
-        try:
-            dao.insert(Movement(data["date"],data["abstract"],
-                                  data["amount"],data["currency"]))
-            return redirect("/")
-        except ValueError as e: #lo hacemos con un mensaje flask -- as e es para llamar a ValueError e
-            flash(str(e))  #utilizamos el o bjeto flash de flask para convertir en el error en str 
-            return render_template("new.html", the_form=data, title = "Alta de moviento")
+        if form.validate():
+            try:
+                dao.insert(Movement(str(form.date.data),form.abstract.data,form.amount.data,form.currency.data))
+                return redirect("/")
+            except ValueError as e: #lo hacemos con un mensaje flask -- as e es para llamar a ValueError e
+                flash(str(e))  #utilizamos el o bjeto flash de flask para convertir en el error en str 
+                return render_template("new.html", the_form=form, title = "Alta de moviento")
+        else: 
+            return render_template("new.html", the_form=form, title = "Alta de moviento")
 
 @app.route("/update_movement/<int:pos>", methods=["GET","POST"])   #int(porque es un numero) id le metes el tipo de variable que quieres meter - le indicas el id
 def upd_mov(pos):

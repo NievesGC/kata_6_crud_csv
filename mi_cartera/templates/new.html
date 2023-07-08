@@ -4,25 +4,36 @@
         <h1>Nueva entarda</h1>
         
         <form action="/new_movement" method="post"> <!-- el action va ser un equivalente de a en los enlaces , le dice la ruta a la que tiene que llegar a  , ademas le deecimos que el metodo que vamos a usar es post lo que va hacer que entre por el else  -->
+            {{the_form.csrf_token}}
+            <!-- es un campo - que es el token que ha creado wtf pero esta oculta, no se ve -->
             <div>
-                <label for="date">Fecha</label>
-                <input type="date" name="date" id="date" value = "{{the_form.date}}">
+                <!--<label for="date">Fecha</label>
+                <input type="date" name="date" id="date" value = "{{the_form.date}}"> lo que va entra llaves lo procesara jinja y ara html basico-->
+                {{the_form.date.label}}
+                {{the_form.date}}
+                {{the_form.date.errors}}
 
             </div>
-            <div>
-                <label for="abstract">Concepto</label>
-                <input type="text" name="abstract" id="abstract"value = "{{the_form.abstract}}">  
+            <div> 
+                <!--<label for="abstract">Concepto</label>
+                <input type="text" name="abstract" id="abstract"value = "{{the_form.abstract}}"> -->
+                {{the_form.abstract.label}}
+                {{the_form.abstract}}
             </div>
             <div>
-                <label for="amount">Cantidad</label>
-                <input type="number" name="amount" id="amount" step = "0.01" value = "{{the_form.amount}}">
+                <!--<label for="amount">Cantidad</label>
+                <input type="number" name="amount" id="amount" step = "0.01" value = "{{the_form.amount}}"> -->
+                {{the_form.amount.label}}
+                {{the_form.amount(step=0.01,type="number")}}
             </div>
             <div>
-                <label for="currency">Moneda</label>
-                <select name="currency" id="currency" selected="{{the_form.currency}}">         <!--selct hace una barra de selccion y le metes las opciones estre ñlas que pouede seleccionar -->
+                <!--<label for="currency">Moneda</label>
+                <select name="currency" id="currency" selected="{{the_form.currency}}">         #selct hace una barra de selccion y le metes las opciones estre ñlas que pouede seleccionar
                     <option value="EUR">Euros</option>
                     <option value="USD">Dólares</option>
-                </select>
+                </select>-->
+                {{the_form.currency.label}}
+                {{the_form.currency}}
             </div>
             <div>
                 <input name= "submit" id="submmit" type="submit" value="Enviar">  <!-- crea el boton de agregar los datos ?¿a donde ?¿-->
